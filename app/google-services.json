@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "277101851042",
+    "project_id": "carecall-d28ba",
+    "storage_bucket": "carecall-d28ba.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:277101851042:android:19ee5637602e448648c2fb",
+        "android_client_info": {
+          "package_name": "com.example.carecall"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCbA7ptLrnqPhfD9mRJ0OXItybBFI4G-Kc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
