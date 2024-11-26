@@ -14,6 +14,7 @@ import com.bumptech.glide.Glide;
 import com.example.carecall.R;
 import com.example.carecall.adapter.GenericRecyclerAdapter;
 import com.example.carecall.databinding.DashboardActivityBinding;
+import com.example.carecall.databinding.DoctorRowBinding;
 import com.example.carecall.databinding.DoctorSpecialistRowBinding;
 import com.example.carecall.entity.CategoryData;
 import com.example.carecall.entity.DashboardData;
@@ -89,14 +90,20 @@ public class DashboardActivity extends AppCompatActivity {
         binding.doctorSpecialistList.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         binding.doctorSpecialistList.setAdapter(new GenericRecyclerAdapter<>(dashboardDataList.get(0).Category, R.layout.doctor_specialist_row, (view, item, position) -> {
             DoctorSpecialistRowBinding doctorSpecialistRowBinding = DoctorSpecialistRowBinding.bind(view);
-            Log.d("Doctor Specialist", item.Name);
             doctorSpecialistRowBinding.specialistName.setText(item.Name);
             Glide.with(this).load(item.Picture).into(doctorSpecialistRowBinding.image4);
         }));
 
-    /*    binding.doctorList.setAdapter(new GenericRecyclerAdapter<>(dashboardDataList.get(0).Doctors, , (GenericRecyclerAdapter.OnBindRowListener<DoctorData>) (view, item, position) -> {
+        binding.doctorList.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        binding.doctorList.setAdapter(new GenericRecyclerAdapter<>(dashboardDataList.get(0).Doctors, R.layout.doctor_row, (view, item, position) -> {
+            DoctorRowBinding doctorRowBinding = DoctorRowBinding.bind(view);
+            doctorRowBinding.name.setText(item.Name);
+            doctorRowBinding.specialist.setText(item.Special);
+            doctorRowBinding.ratings.setText(item.getRating().toString());
+            doctorRowBinding.experience.setText(item.getExperience().toString()+" Year");
+            Glide.with(this).load(item.Picture).error(R.drawable.doctor).into(doctorRowBinding.doctorImg);
 
-        }));*/
+        }));
     }
 
     private void parseAndLogJson(String jsonData) {

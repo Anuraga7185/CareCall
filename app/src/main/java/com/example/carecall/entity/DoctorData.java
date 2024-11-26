@@ -13,4 +13,11 @@ public class DoctorData {
     public double Rating;
     public String Site;
     public String Special;
+
+    public Double getRating() {
+        return this.Rating;
+    }
+    public Integer getExperience(){
+        return this.Expriense;
+    }
 }

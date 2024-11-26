@@ -23,7 +23,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/text1"
+            android:id="@+id/name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="textview"
@@ -35,52 +35,54 @@
             app:layout_constraintTop_toBottomOf="@id/doctor_img" />
 
         <TextView
-            android:id="@+id/text2"
+            android:id="@+id/specialist"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="textview"
-            android:textSize="12sp"
             android:textColor="@color/grey"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toTopOf="@id/ratings"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/text3"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/text1" />
+            app:layout_constraintTop_toBottomOf="@id/name" />
 
         <ImageView
-            android:id="@+id/star"
+            android:id="@+id/ratings_img"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingEnd="4dp"
+            android:layout_marginBottom="3dp"
             android:src="@drawable/star"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
         <TextView
-            android:id="@+id/text3"
+            android:id="@+id/ratings"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="textview"
-            android:textStyle="bold"
+            android:layout_marginStart="4dp"
+            android:text="5"
             android:textColor="@color/black"
+            android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@id/star" />
+            app:layout_constraintStart_toEndOf="@id/ratings_img" />
 
         <ImageView
+            android:id="@+id/experience_img"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="4dp"
+            android:layout_marginBottom="3dp"
+            android:src="@drawable/experience"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/experience" />
+
+        <TextView
             android:id="@+id/experience"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingEnd="4dp"
-            android:src="@drawable/experience"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/text4" />
-
-        <TextView
-            android:id="@+id/text4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textStyle="bold"
             android:text="textview"
             android:textColor="@color/black"
+            android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
