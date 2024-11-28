@@ -35,11 +35,11 @@ public class DetailActivity extends AppCompatActivity {
 
         // listeners
 
-        binding.backBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
+        binding.backBtn.setOnClickListener(v -> finish());
+        binding.appointmentBtn.setOnClickListener(v -> {
+            Intent startIntent = new Intent(this, BookAPpointmentActivity.class);
+            startIntent.putExtra("selectedDoctor", intent);
+            startActivity(startIntent);
         });
     }
 }
