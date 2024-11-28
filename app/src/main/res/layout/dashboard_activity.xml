@@ -28,6 +28,12 @@
                 android:layout_marginTop="18dp"
                 android:orientation="horizontal">
 
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="7dp"
+                    android:src="@drawable/back" />
+
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -58,6 +64,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="end"
+                    android:layout_marginEnd="7dp"
                     android:src="@drawable/bell_icon" />
             </LinearLayout>
 
@@ -128,7 +135,7 @@
                 android:id="@+id/doctor_specialist_data"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-               >
+                android:padding="7dp">
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/doctor_specialist_list"
@@ -169,6 +176,7 @@
                 android:id="@+id/doctor_list_header_data"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:padding="7dp"
                 android:visibility="gone">
 
                 <androidx.recyclerview.widget.RecyclerView

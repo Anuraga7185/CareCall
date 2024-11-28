@@ -1,6 +1,8 @@
 package com.example.carecall.entity;
 
-public class DoctorData {
+import java.io.Serializable;
+
+public class DoctorData implements Serializable {
     public String Address;
     public String Biography;
     public int Expriense;
@@ -17,7 +19,8 @@ public class DoctorData {
     public Double getRating() {
         return this.Rating;
     }
-    public Integer getExperience(){
+
+    public Integer getExperience() {
         return this.Expriense;
     }
 }

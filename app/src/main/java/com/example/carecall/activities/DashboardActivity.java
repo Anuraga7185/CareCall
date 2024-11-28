@@ -1,5 +1,6 @@
 package com.example.carecall.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -100,8 +101,13 @@ public class DashboardActivity extends AppCompatActivity {
             doctorRowBinding.name.setText(item.Name);
             doctorRowBinding.specialist.setText(item.Special);
             doctorRowBinding.ratings.setText(item.getRating().toString());
-            doctorRowBinding.experience.setText(item.getExperience().toString()+" Year");
+            doctorRowBinding.experience.setText(item.getExperience().toString() + " Year");
             Glide.with(this).load(item.Picture).error(R.drawable.doctor).into(doctorRowBinding.doctorImg);
+            doctorRowBinding.getRoot().setOnClickListener(v -> {
+                Intent intent = new Intent(this, DetailActivity.class); // to start new activity
+                intent.putExtra("doctor", item);
+                startActivity(intent);
+            });
 
         }));
     }
