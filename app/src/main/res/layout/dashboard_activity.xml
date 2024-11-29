@@ -220,22 +220,24 @@
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center"
                 android:layout_margin="10dp"
-                android:background="@drawable/curved_edit_box"
+                android:layout_weight="1"
+                android:background="@drawable/circle_bg"
+                android:gravity="center"
                 android:orientation="vertical">
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/btn_1" />
+                    android:src="@drawable/btn_1"
+                    app:tint="@color/purple" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
                     android:text="Explore"
+                    android:textColor="@color/purple"
                     android:textSize="16sp"
                     android:textStyle="bold" />
             </LinearLayout>
@@ -250,13 +252,15 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/btn_2" />
+                    android:src="@drawable/btn_2"
+                    app:tint="@color/purple" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
                     android:text="Whislist"
+                    android:textColor="@color/purple"
                     android:textSize="16sp"
                     android:textStyle="bold" />
             </LinearLayout>
@@ -271,13 +275,15 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/btn_3" />
+                    android:src="@drawable/btn_3"
+                    app:tint="@color/purple" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
                     android:text="Settings"
+                    android:textColor="@color/purple"
                     android:textSize="16sp"
                     android:textStyle="bold" />
             </LinearLayout>
@@ -292,13 +298,15 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/btn_4" />
+                    android:src="@drawable/btn_4"
+                    app:tint="@color/purple" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
                     android:text="Profile"
+                    android:textColor="@color/purple"
                     android:textSize="16sp"
                     android:textStyle="bold" />
             </LinearLayout>

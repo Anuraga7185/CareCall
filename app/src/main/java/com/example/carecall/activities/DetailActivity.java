@@ -25,7 +25,7 @@ public class DetailActivity extends AppCompatActivity {
 
         binding.name.setText(intent.Name);
         binding.speciality.setText(intent.Special);
-        binding.address.setText(intent.Site);
+        binding.address.setText(intent.Address);
         binding.patiens.setText(intent.Patiens);
         binding.experience.setText(intent.getExperience().toString() + " Year");
         binding.bio.setText(intent.Biography);
