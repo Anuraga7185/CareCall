@@ -3,7 +3,6 @@ package com.example.carecall.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -37,7 +36,7 @@ public class DetailActivity extends AppCompatActivity {
 
         binding.backBtn.setOnClickListener(v -> finish());
         binding.appointmentBtn.setOnClickListener(v -> {
-            Intent startIntent = new Intent(this, BookAPpointmentActivity.class);
+            Intent startIntent = new Intent(this, BookAppointmentActivity.class);
             startIntent.putExtra("selectedDoctor", intent);
             startActivity(startIntent);
         });
