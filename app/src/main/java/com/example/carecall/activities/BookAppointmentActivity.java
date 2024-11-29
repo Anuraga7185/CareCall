@@ -1,6 +1,7 @@
 package com.example.carecall.activities;
 
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -18,15 +19,19 @@ import com.razorpay.PaymentResultListener;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
 
 public class BookAppointmentActivity extends AppCompatActivity implements PaymentResultListener {
     ActivityBookAppointmentBinding binding;
+    String startTime = "07:00 AM";
+    String endTime = "4:00 PM";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,13 +47,23 @@ public class BookAppointmentActivity extends AppCompatActivity implements Paymen
             binding.doctorName.setText(intent.Name);
             binding.doctorSpeciality.setText(intent.Special);
             binding.doctorSite.setText(intent.Address);
-            binding.appointmentBtn.setText("Pay "+intent.getPrice());
+            binding.appointmentBtn.setText("Pay " + intent.getPrice());
         }
 
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         binding.recyclerView.setAdapter(new GenericRecyclerAdapter<>(getListOfDates(), R.layout.date_row, (view, item, position) -> {
             DateRowBinding dateRowBinding = DateRowBinding.bind(view);
+            dateRowBinding.day.setVisibility(View.VISIBLE);
+            if (position == 0) {
+                dateRowBinding.container.setBackground(getDrawable(R.drawable.oval_purple_bg));
+                dateRowBinding.time.setTextColor(getColor(android.R.color.white));
+                dateRowBinding.day.setTextColor(getColor(android.R.color.white));
 
+            } else {
+                dateRowBinding.container.setBackground(getDrawable(R.drawable.curved_edit_box));
+                dateRowBinding.time.setTextColor(getColor(android.R.color.black));
+                dateRowBinding.day.setTextColor(getColor(android.R.color.black));
+            }
             // Get the current date
             Locale indiaLocaless = new Locale("en", "IN");
             DateTimeFormatter formatterss = DateTimeFormatter.ofPattern("EEE", indiaLocaless); // "EEE" gives abbreviated day name
@@ -110,7 +125,43 @@ public class BookAppointmentActivity extends AppCompatActivity implements Paymen
                 e.printStackTrace();
             }
         });
+        binding.recyclerView2.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        binding.recyclerView2.setAdapter(new GenericRecyclerAdapter<>(generateTimeSlots(startTime, endTime), R.layout.date_row, (view, item, position) -> {
+            DateRowBinding dateRowBinding = DateRowBinding.bind(view);
+            if (position == 0) {
+                dateRowBinding.container.setBackground(getDrawable(R.drawable.oval_purple_bg));
+                dateRowBinding.time.setTextColor(getColor(android.R.color.white));
 
+            } else {
+                dateRowBinding.container.setBackground(getDrawable(R.drawable.curved_edit_box));
+                dateRowBinding.time.setTextColor(getColor(android.R.color.black));
+            }
+            dateRowBinding.time.setText(item);
+        }));
+    }
+
+    public List<String> generateTimeSlots(String startTime, String endTime) {
+        List<String> timeSlots = new ArrayList<>();
+        SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mm a");
+
+        try {
+            // Parse start and end times
+            Calendar startCalendar = Calendar.getInstance();
+            startCalendar.setTime(timeFormat.parse(startTime));
+
+            Calendar endCalendar = Calendar.getInstance();
+            endCalendar.setTime(timeFormat.parse(endTime));
+
+            // Generate time slots
+            while (startCalendar.before(endCalendar) || startCalendar.equals(endCalendar)) {
+                timeSlots.add(timeFormat.format(startCalendar.getTime()));
+                startCalendar.add(Calendar.MINUTE, 30); // Add 30 minutes
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return timeSlots;
     }
 
     public List<LocalDate> getListOfDates() {
@@ -122,6 +173,7 @@ public class BookAppointmentActivity extends AppCompatActivity implements Paymen
         }
         return datesList;
     }
+
     @Override
     public void onPaymentSuccess(String s) {
         Toast.makeText(this, "Payment is successful : " + s, Toast.LENGTH_SHORT).show();

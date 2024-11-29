@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/container"
     android:layout_width="120dp"
     android:layout_height="wrap_content"
     android:layout_marginStart="7dp"
     android:background="@drawable/curved_edit_box"
-    android:backgroundTint="@color/purple"
     android:orientation="vertical"
     android:padding="10dp">
 
@@ -14,15 +14,16 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:text="Mon"
-        android:textColor="@android:color/white"
-        android:textSize="12sp" />
+        android:textColor="@android:color/black"
+        android:textSize="12sp"
+        android:visibility="gone" />
 
     <TextView
         android:id="@+id/time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@android:color/white"
         android:layout_gravity="center_horizontal"
         android:text="12 Oct"
+        android:textColor="@android:color/black"
         android:textSize="17sp" />
 </LinearLayout>
