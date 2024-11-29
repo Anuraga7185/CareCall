@@ -15,6 +15,8 @@ public class DoctorData implements Serializable {
     public double Rating;
     public String Site;
     public String Special;
+    public String Price;
+
 
     public Double getRating() {
         return this.Rating;
@@ -22,5 +24,9 @@ public class DoctorData implements Serializable {
 
     public Integer getExperience() {
         return this.Expriense;
+    }
+
+    public String getPrice() {
+        return Price.isEmpty() ? "O" : Price;
     }
 }
