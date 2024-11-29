@@ -1,5 +1,6 @@
 package com.example.carecall.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
@@ -177,6 +178,14 @@ public class BookAppointmentActivity extends AppCompatActivity implements Paymen
     @Override
     public void onPaymentSuccess(String s) {
         Toast.makeText(this, "Payment is successful : " + s, Toast.LENGTH_SHORT).show();
+
+        // Navigate to HomeActivity and clear back stack
+        Intent intent = new Intent(this, DashboardActivity.class); // Replace HomeActivity with your actual activity class
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+
+        // Finish the current activity
+        finish();
     }
 
     @Override
