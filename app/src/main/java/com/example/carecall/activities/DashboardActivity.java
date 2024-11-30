@@ -5,8 +5,10 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -20,6 +22,8 @@ import com.example.carecall.databinding.DoctorSpecialistRowBinding;
 import com.example.carecall.entity.CategoryData;
 import com.example.carecall.entity.DashboardData;
 import com.example.carecall.entity.DoctorData;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationBarView;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -36,6 +40,7 @@ import java.util.concurrent.Executors;
 public class DashboardActivity extends AppCompatActivity {
     DashboardActivityBinding binding;
     List<DashboardData> dashboardDataList = new ArrayList<>();
+
     private final Executor executor = Executors.newSingleThreadExecutor();
     private final Handler mainThreadHandler = new Handler(Looper.getMainLooper());
 
@@ -44,7 +49,12 @@ public class DashboardActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = DashboardActivityBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
+        binding.bottomContainer.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                return false;
+            }
+        });
         setOnClickListeners();
 
         // Fetch Json Data From Server

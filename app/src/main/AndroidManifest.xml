@@ -15,6 +15,16 @@
         android:theme="@style/Theme.CareCall"
         tools:targetApi="34">
         <activity
+            android:name=".activities.SignUpScreenActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.LoginScreenActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.LoginActivity"
+            android:exported="false"
+            android:theme="@style/Theme.CareCall" />
+        <activity
             android:name=".activities.DoctorListActivity"
             android:exported="false" />
         <activity

@@ -204,7 +204,7 @@
     </RelativeLayout>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottom_container"
+        android:id="@+id/bottomContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -236,7 +236,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
-                    android:text="Explore"
+                    android:text="@string/explore"
                     android:textColor="@color/purple"
                     android:textSize="16sp"
                     android:textStyle="bold" />
@@ -260,7 +260,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
-                    android:text="Whislist"
+                    android:text="@string/whislist"
                     android:textColor="@color/purple"
                     android:textSize="16sp"
                     android:textStyle="bold" />
