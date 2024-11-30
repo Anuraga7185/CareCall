@@ -1,5 +1,6 @@
 package com.example.carecall.activities;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -27,13 +28,17 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
 
 public class BookAppointmentActivity extends AppCompatActivity implements PaymentResultListener {
     ActivityBookAppointmentBinding binding;
     String startTime = "07:00 AM";
     String endTime = "4:00 PM";
+    int selectedTime = 0;
+    int selectedDate = 0;
 
+    @SuppressLint("NotifyDataSetChanged")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,7 +60,7 @@ public class BookAppointmentActivity extends AppCompatActivity implements Paymen
         binding.recyclerView.setAdapter(new GenericRecyclerAdapter<>(getListOfDates(), R.layout.date_row, (view, item, position) -> {
             DateRowBinding dateRowBinding = DateRowBinding.bind(view);
             dateRowBinding.day.setVisibility(View.VISIBLE);
-            if (position == 0) {
+            if (selectedDate == position) {
                 dateRowBinding.container.setBackground(getDrawable(R.drawable.oval_purple_bg));
                 dateRowBinding.time.setTextColor(getColor(android.R.color.white));
                 dateRowBinding.day.setTextColor(getColor(android.R.color.white));
@@ -83,6 +88,11 @@ public class BookAppointmentActivity extends AppCompatActivity implements Paymen
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d", indiaLocale); // "d" gives only the day of the month
             String formattedDay = item.format(formatter);
             dateRowBinding.time.setText(formattedDay + " " + shortMonthName);
+
+            dateRowBinding.getRoot().setOnClickListener(v -> {
+                selectedDate = position;
+                Objects.requireNonNull(binding.recyclerView.getAdapter()).notifyDataSetChanged();
+            });
         }));
         binding.appointmentBtn.setOnClickListener(v -> {
             String samount = intent.getPrice();
@@ -101,25 +111,18 @@ public class BookAppointmentActivity extends AppCompatActivity implements Paymen
             try {
                 // to put name
                 object.put("name", "Anurag");
-
                 // put description
                 object.put("description", "Test payment");
-
                 // to set theme color
                 object.put("theme.color", "");
-
                 // put the currency
                 object.put("currency", "INR");
-
                 // put amount
                 object.put("amount", amount);
-
                 // put mobile number
                 object.put("prefill.contact", "7011341103");
-
                 // put email
                 object.put("prefill.email", "ranurag378@gmail.com");
-
                 // open razorpay to checkout activity
                 checkout.open(this, object);
             } catch (JSONException e) {
@@ -129,7 +132,7 @@ public class BookAppointmentActivity extends AppCompatActivity implements Paymen
         binding.recyclerView2.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         binding.recyclerView2.setAdapter(new GenericRecyclerAdapter<>(generateTimeSlots(startTime, endTime), R.layout.date_row, (view, item, position) -> {
             DateRowBinding dateRowBinding = DateRowBinding.bind(view);
-            if (position == 0) {
+            if (selectedTime == position) {
                 dateRowBinding.container.setBackground(getDrawable(R.drawable.oval_purple_bg));
                 dateRowBinding.time.setTextColor(getColor(android.R.color.white));
 
@@ -138,6 +141,10 @@ public class BookAppointmentActivity extends AppCompatActivity implements Paymen
                 dateRowBinding.time.setTextColor(getColor(android.R.color.black));
             }
             dateRowBinding.time.setText(item);
+            dateRowBinding.getRoot().setOnClickListener(v -> {
+                selectedTime = position;
+                binding.recyclerView2.getAdapter().notifyDataSetChanged();
+            });
         }));
     }
 
@@ -183,8 +190,6 @@ public class BookAppointmentActivity extends AppCompatActivity implements Paymen
         Intent intent = new Intent(this, DashboardActivity.class); // Replace HomeActivity with your actual activity class
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
-
-        // Finish the current activity
         finish();
     }
 
