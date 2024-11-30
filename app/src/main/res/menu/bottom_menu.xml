@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <menu xmlns:android="http://schemas.android.com/apk/res/android">
+        <item
+            android:id="@+id/navigation_dashboard"
+            android:icon="@drawable/btn_1"
+            android:title="Explore" />
+        <item
+            android:id="@+id/navigation_whislist"
+            android:icon="@drawable/btn_2"
+            android:title="Whislist" />
+        <item
+            android:id="@+id/navigation_settings"
+            android:icon="@drawable/btn_3"
+            android:title="Settings" />
+    <item
+        android:id="@+id/navigation_profile"
+        android:icon="@drawable/btn_4"
+        android:title="profile" />
+    </menu>

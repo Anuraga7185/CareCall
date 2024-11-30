@@ -7,6 +7,7 @@ import android.os.Looper;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -14,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.bumptech.glide.Glide;
+import com.example.carecall.MainActivity;
 import com.example.carecall.R;
 import com.example.carecall.adapter.GenericRecyclerAdapter;
 import com.example.carecall.databinding.DashboardActivityBinding;
@@ -49,12 +51,7 @@ public class DashboardActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = DashboardActivityBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        binding.bottomContainer.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                return false;
-            }
-        });
+
         setOnClickListeners();
 
         // Fetch Json Data From Server

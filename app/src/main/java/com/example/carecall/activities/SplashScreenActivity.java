@@ -3,12 +3,8 @@ package com.example.carecall.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
-
 import androidx.appcompat.app.AppCompatActivity;
 
-
-import com.example.carecall.MainActivity;
 import com.example.carecall.databinding.ActivitySplashScreenBinding;
 
 
