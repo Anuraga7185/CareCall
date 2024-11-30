@@ -17,9 +17,7 @@ import com.example.carecall.adapter.GenericRecyclerAdapter;
 import com.example.carecall.databinding.DashboardActivityBinding;
 import com.example.carecall.databinding.DoctorRowBinding;
 import com.example.carecall.databinding.DoctorSpecialistRowBinding;
-import com.example.carecall.entity.CategoryData;
 import com.example.carecall.entity.DashboardData;
-import com.example.carecall.entity.DoctorData;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -38,12 +36,14 @@ public class DashboardActivity extends AppCompatActivity {
     List<DashboardData> dashboardDataList = new ArrayList<>();
     private final Executor executor = Executors.newSingleThreadExecutor();
     private final Handler mainThreadHandler = new Handler(Looper.getMainLooper());
+    int whichBottomView;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DashboardActivityBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        whichBottomView = 0;
 
         setOnClickListeners();
 
@@ -68,9 +68,27 @@ public class DashboardActivity extends AppCompatActivity {
             intent.putExtra("bundle", bundle);
             startActivity(intent);
         });
+        binding.home.setOnClickListener(v -> {
+            if (whichBottomView != 0) {
+                fetchData();
+            }
+        });
+        binding.whishlist.setOnClickListener(v -> {
+
+        });
+        binding.booking.setOnClickListener(v -> {
+
+        });
+        binding.profile.setOnClickListener(v -> {
+
+        });
     }
 
 
+    // To View Wishlist
+
+
+    // To View Home Screen
     private void fetchData() {
         executor.execute(() -> {
             StringBuilder result = new StringBuilder();
