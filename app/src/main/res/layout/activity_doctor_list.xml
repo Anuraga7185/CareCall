@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/grey"
+    android:background="@color/lightpurple"
     android:orientation="vertical"
     tools:context=".activities.DoctorListActivity">
 
@@ -21,7 +21,7 @@
             android:layout_height="50dp"
             android:autofillHints="Doctor"
             android:iconifiedByDefault="false"
-            android:queryHint="Search Doctor Here..">
+            android:queryHint="Search Here..">
 
         </SearchView>
     </LinearLayout>

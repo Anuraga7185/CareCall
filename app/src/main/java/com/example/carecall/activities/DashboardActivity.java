@@ -55,6 +55,17 @@ public class DashboardActivity extends AppCompatActivity {
         binding.doctorSeeAll.setOnClickListener(v -> {
             Intent intent = new Intent(DashboardActivity.this, DoctorListActivity.class);
             intent.putExtra("doctors", dashboardDataList.get(0));
+            Bundle bundle = new Bundle();
+            bundle.putBoolean("isSpeciality", false);
+            intent.putExtra("bundle", bundle);
+            startActivity(intent);
+        });
+        binding.doctorSpecialitySeeAll.setOnClickListener(v -> {
+            Intent intent = new Intent(DashboardActivity.this, DoctorListActivity.class);
+            intent.putExtra("doctors", dashboardDataList.get(0));
+            Bundle bundle = new Bundle();
+            bundle.putBoolean("isSpeciality", true);
+            intent.putExtra("bundle", bundle);
             startActivity(intent);
         });
     }
