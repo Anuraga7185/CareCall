@@ -112,7 +112,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/terms_amp_condition"
-                android:textColor="@color/blue"
+                android:textColor="@color/purple"
                 android:fontFamily="sans-serif-medium" />
         </LinearLayout>
 
@@ -121,7 +121,7 @@
             android:id="@+id/btnSignUp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/blue"
+            android:backgroundTint="@color/purple"
             android:layout_marginStart="20dp"
             android:layout_marginEnd="20dp"
             android:text="@string/sign_up"
@@ -214,7 +214,7 @@
             android:layout_marginStart="2dp"
             android:textStyle="bold"
             android:text="@string/sign_in"
-            android:textColor="@color/blue"
+            android:textColor="@color/purple"
             android:layout_gravity="center" />
         <View
             android:layout_width="53dp"
