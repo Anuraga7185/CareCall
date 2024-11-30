@@ -52,7 +52,11 @@ public class DashboardActivity extends AppCompatActivity {
     }
 
     private void setOnClickListeners() {
-
+        binding.doctorSeeAll.setOnClickListener(v -> {
+            Intent intent = new Intent(DashboardActivity.this, DoctorListActivity.class);
+            intent.putExtra("doctors", dashboardDataList.get(0));
+            startActivity(intent);
+        });
     }
 
 

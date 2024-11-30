@@ -15,6 +15,9 @@
         android:theme="@style/Theme.CareCall"
         tools:targetApi="34">
         <activity
+            android:name=".activities.DoctorListActivity"
+            android:exported="false" />
+        <activity
             android:name=".activities.BookAppointmentActivity"
             android:exported="false" />
         <activity

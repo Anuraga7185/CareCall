@@ -1,5 +1,7 @@
 package com.example.carecall.entity;
 
+import androidx.annotation.Nullable;
+
 import java.io.Serializable;
 
 public class DoctorData implements Serializable {
@@ -28,5 +30,13 @@ public class DoctorData implements Serializable {
 
     public String getPrice() {
         return Price.isEmpty() ? "O" : Price;
+    }
+
+    @Override
+    public boolean equals(@Nullable Object obj) {
+        if (obj instanceof String) {
+            return obj.equals(this.Name);
+        }
+        return super.equals(obj);
     }
 }
