@@ -5,27 +5,19 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.bumptech.glide.Glide;
-import com.example.carecall.MainActivity;
 import com.example.carecall.R;
 import com.example.carecall.adapter.GenericRecyclerAdapter;
 import com.example.carecall.databinding.DashboardActivityBinding;
 import com.example.carecall.databinding.DoctorRowBinding;
 import com.example.carecall.databinding.DoctorSpecialistRowBinding;
-import com.example.carecall.entity.CategoryData;
 import com.example.carecall.entity.DashboardData;
-import com.example.carecall.entity.DoctorData;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.navigation.NavigationBarView;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -42,15 +34,16 @@ import java.util.concurrent.Executors;
 public class DashboardActivity extends AppCompatActivity {
     DashboardActivityBinding binding;
     List<DashboardData> dashboardDataList = new ArrayList<>();
-
     private final Executor executor = Executors.newSingleThreadExecutor();
     private final Handler mainThreadHandler = new Handler(Looper.getMainLooper());
+    int whichBottomView;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DashboardActivityBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        whichBottomView = 0;
 
         setOnClickListeners();
 
@@ -75,9 +68,27 @@ public class DashboardActivity extends AppCompatActivity {
             intent.putExtra("bundle", bundle);
             startActivity(intent);
         });
+        binding.home.setOnClickListener(v -> {
+            if (whichBottomView != 0) {
+                fetchData();
+            }
+        });
+        binding.whishlist.setOnClickListener(v -> {
+
+        });
+        binding.booking.setOnClickListener(v -> {
+
+        });
+        binding.profile.setOnClickListener(v -> {
+
+        });
     }
 
 
+    // To View Wishlist
+
+
+    // To View Home Screen
     private void fetchData() {
         executor.execute(() -> {
             StringBuilder result = new StringBuilder();
