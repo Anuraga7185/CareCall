@@ -26,6 +26,7 @@ public class SplashScreenActivity extends AppCompatActivity {
         binding.moveBtnToDashboard.setOnClickListener(v -> {
             Log.d( "SplashScreen Activity: ", "SplashScreen Activity");
             startActivity(new Intent(this, LoginScreenActivity.class));
+            finish();
         });
     }
 }

@@ -7,9 +7,9 @@ import android.os.Looper;
 import android.util.Log;
 import android.view.View;
 
-import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.bumptech.glide.Glide;
@@ -19,6 +19,7 @@ import com.example.carecall.databinding.DashboardActivityBinding;
 import com.example.carecall.databinding.DoctorRowBinding;
 import com.example.carecall.databinding.DoctorSpecialistRowBinding;
 import com.example.carecall.entity.DashboardData;
+import com.example.carecall.entity.DoctorData;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -39,8 +40,6 @@ public class DashboardActivity extends AppCompatActivity {
     private final Handler mainThreadHandler = new Handler(Looper.getMainLooper());
     int whichBottomView;
 
-
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,8 +50,8 @@ public class DashboardActivity extends AppCompatActivity {
         setOnClickListeners();
 
         // Fetch Json Data From Server
-        fetchData();
-
+        showDataOnScreen(whichBottomView);
+        fetchHomeData();
     }
 
     private void setOnClickListeners() {
@@ -74,34 +73,98 @@ public class DashboardActivity extends AppCompatActivity {
         });
         binding.home.setOnClickListener(v -> {
             if (whichBottomView != 0) {
-                fetchData();
+                whichBottomView = 0;
+                showDataOnScreen(0);
+                fetchHomeData();
             }
         });
         binding.whishlist.setOnClickListener(v -> {
-
+            if (whichBottomView != 1) {
+                whichBottomView = 1;
+                showDataOnScreen(1);
+                fetchWishListData();
+            }
         });
         binding.booking.setOnClickListener(v -> {
+            if (whichBottomView != 2) {
+                whichBottomView = 2;
+
+            }
 
         });
         binding.profile.setOnClickListener(v -> {
+            if (whichBottomView != 3) {
+                whichBottomView = 3;
 
-        });
-
-        // Handle back button press
-        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
-            @Override
-            public void handleOnBackPressed() {
-                finishAffinity(); // This will close the app
             }
         });
     }
 
 
     // To View Wishlist
+    private void fetchWishListData() {
+        binding.whishlistLoader.setVisibility(View.VISIBLE);
+        executor.execute(() -> {
+            StringBuilder result = new StringBuilder();
+            try {
+                URL url = new URL("https://67440f77b4e2e04abea090b8.mockapi.io/api/v1/getFavourites");
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                conn.setRequestMethod("GET");
 
+                BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    result.append(line);
+                }
+                reader.close();
+
+                String jsonData = result.toString();
+                mainThreadHandler.post(() -> parseAndLogJsonWishList(jsonData));
+
+            } catch (Exception e) {
+                Log.e("FetchData", "Error fetching data", e);
+            }
+        });
+    }
+
+    private void parseAndLogJsonWishList(String jsonData) {
+        try {
+
+            Gson gson = new Gson();
+            Type listType = new TypeToken<ArrayList<DoctorData>>() {
+            }.getType();
+            List<DoctorData> doctorDataList = gson.fromJson(jsonData, listType);
+            binding.recyclerViewWishlist.setLayoutManager(new GridLayoutManager(this, 2));
+            binding.recyclerViewWishlist.setAdapter(new GenericRecyclerAdapter<>(doctorDataList, R.layout.doctor_row, this::createRow));
+
+            binding.whishlistLoader.setVisibility(View.GONE);
+
+            this.dataToView();
+        } catch (Exception e) {
+            Log.e("FetchData", "Error parsing JSON", e);
+        }
+    }
+
+    private void createRow(View view, DoctorData item, int i) {
+
+        DoctorRowBinding doctorRowBinding = DoctorRowBinding.bind(view);
+        doctorRowBinding.name.setText(item.Name);
+        doctorRowBinding.specialist.setText(item.Special);
+        doctorRowBinding.ratings.setText(item.getRating().toString());
+        doctorRowBinding.experience.setText(item.getExperience().toString() + " Year");
+        Glide.with(this).load(item.Picture).error(R.drawable.doctor).into(doctorRowBinding.doctorImg);
+        doctorRowBinding.getRoot().setOnClickListener(v -> {
+            Intent doctorIntent = new Intent(this, DetailActivity.class); // to start new activity
+            doctorIntent.putExtra("doctor", item);
+            startActivity(doctorIntent);
+        });
+
+    }
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     // To View Home Screen
-    private void fetchData() {
+    private void fetchHomeData() {
+        binding.loadPage.setVisibility(View.VISIBLE);
         executor.execute(() -> {
             StringBuilder result = new StringBuilder();
             try {
@@ -168,6 +231,24 @@ public class DashboardActivity extends AppCompatActivity {
             this.dataToView();
         } catch (Exception e) {
             Log.e("FetchData", "Error parsing JSON", e);
+        }
+    }
+
+    // Visibility on selected bottom view base--------------------------------------------------------------------------
+    private void showDataOnScreen(int position) {
+        binding.home.setBackground(getDrawable(R.color.lightpurple));
+        binding.whishlist.setBackground(getDrawable(R.color.lightpurple));
+        binding.booking.setBackground(getDrawable(R.color.lightpurple));
+        binding.profile.setBackground(getDrawable(R.color.lightpurple));
+
+        binding.homeScreenContainer.setVisibility(View.GONE);
+        binding.wishlistScreenContainer.setVisibility(View.GONE);
+        if (position == 1) {
+            binding.whishlist.setBackground(getDrawable(R.drawable.curved_edit_box));
+            binding.wishlistScreenContainer.setVisibility(View.VISIBLE);
+        } else {
+            binding.home.setBackground(getDrawable(R.drawable.curved_edit_box));
+            binding.homeScreenContainer.setVisibility(View.VISIBLE);
         }
     }
 }
