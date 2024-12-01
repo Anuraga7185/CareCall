@@ -2,12 +2,9 @@ package com.example.carecall.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
-
+import android.util.Log;
 import androidx.appcompat.app.AppCompatActivity;
 
-
-import com.example.carecall.MainActivity;
 import com.example.carecall.databinding.ActivitySplashScreenBinding;
 
 
@@ -27,7 +24,9 @@ public class SplashScreenActivity extends AppCompatActivity {
 
     private void setOnClickListeners() {
         binding.moveBtnToDashboard.setOnClickListener(v -> {
-            startActivity(new Intent(this, DashboardActivity.class));
+            Log.d( "SplashScreen Activity: ", "SplashScreen Activity");
+            startActivity(new Intent(this, LoginScreenActivity.class));
+            finish();
         });
     }
 }

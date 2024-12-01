@@ -54,4 +54,22 @@
     </string>
     <string name="exceptional_care_close_to_you">Exceptional Care Close To You</string>
     <string name="get_started">Get Started</string>
+    <string name="don_t_have_an_account">Don\'t have an account?</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="or_sign_in_with">Or sign in with</string>
+    <string name="welcome_back">Hi! Welcome back, you\'ve been missed</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="forgot_password">Forgot Password?</string>
+    <string name="sign_in">Sign In</string>
+    <string name="terms_amp_condition"><![CDATA[Terms & Condition]]></string>
+    <string name="agree_with">Agree with</string>
+    <string name="already_have_an_account">Already have an account?</string>
+    <string name="fill_your_information">Fill your information below or register</string>
+    <string name="social_account">with your social account.</string>
+    <string name="userName">Name</string>
+    <string name="or_sign_up_with">Or sign up with</string>
+    <string name="create_account">Create Account</string>
+    <string name="explore">Explore</string>
+    <string name="whislist">Whislist</string>
 </resources>

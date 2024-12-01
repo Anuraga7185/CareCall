@@ -236,10 +236,10 @@ public class DashboardActivity extends AppCompatActivity {
 
     // Visibility on selected bottom view base--------------------------------------------------------------------------
     private void showDataOnScreen(int position) {
-        binding.home.setBackground(getDrawable(R.color.grey));
-        binding.whishlist.setBackground(getDrawable(R.color.grey));
-        binding.booking.setBackground(getDrawable(R.color.grey));
-        binding.profile.setBackground(getDrawable(R.color.grey));
+        binding.home.setBackground(getDrawable(R.color.lightpurple));
+        binding.whishlist.setBackground(getDrawable(R.color.lightpurple));
+        binding.booking.setBackground(getDrawable(R.color.lightpurple));
+        binding.profile.setBackground(getDrawable(R.color.lightpurple));
 
         binding.homeScreenContainer.setVisibility(View.GONE);
         binding.wishlistScreenContainer.setVisibility(View.GONE);
