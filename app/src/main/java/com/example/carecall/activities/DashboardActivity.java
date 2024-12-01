@@ -38,6 +38,8 @@ public class DashboardActivity extends AppCompatActivity {
     private final Handler mainThreadHandler = new Handler(Looper.getMainLooper());
     int whichBottomView;
 
+
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,6 +51,7 @@ public class DashboardActivity extends AppCompatActivity {
 
         // Fetch Json Data From Server
         fetchData();
+
     }
 
     private void setOnClickListeners() {
