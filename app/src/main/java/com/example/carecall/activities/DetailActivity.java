@@ -35,6 +35,7 @@ public class DetailActivity extends AppCompatActivity {
     private final Handler mainThreadHandler = new Handler(Looper.getMainLooper());
     DoctorData intent;
     DoctorData favourites;
+    ArrayList<DoctorData> favouritesList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,14 +53,8 @@ public class DetailActivity extends AppCompatActivity {
         binding.experience.setText(intent.getExperience().toString() + " Year");
         binding.bio.setText(intent.Biography);
         binding.rating.setText(intent.getRating().toString());
-        if (intent.isFavourite) {
-            binding.likeBtn.setVisibility(View.GONE);
-            binding.unlikeBtn.setVisibility(View.VISIBLE);
-        } else {
-            binding.likeBtn.setVisibility(View.VISIBLE);
-            binding.unlikeBtn.setVisibility(View.GONE);
+        fetchWishlist();
 
-        }
         Glide.with(this).load(intent.Picture).error(R.drawable.doctor).into(binding.doctorImg);
 
         // listeners
@@ -79,6 +74,7 @@ public class DetailActivity extends AppCompatActivity {
         });
     }
 
+    // remove whislist
     private void removeToWhishList(String doctorId) {
         if (doctorId == null) {
             return;
@@ -168,6 +164,7 @@ public class DetailActivity extends AppCompatActivity {
         });
     }
 
+    // add to whishilist
     private void hideProgress() {
         binding.progress.setVisibility(View.GONE);
     }
@@ -181,6 +178,57 @@ public class DetailActivity extends AppCompatActivity {
             binding.progress.setVisibility(View.GONE);
             binding.unlikeBtn.setVisibility(View.VISIBLE);
             binding.likeBtn.setVisibility(View.GONE);
+        } catch (Exception e) {
+            Log.e("FetchData", "Error parsing JSON", e);
+        }
+    }
+
+    // get whislist data
+    private void fetchWishlist() {
+        executor.execute(() -> {
+            StringBuilder result = new StringBuilder();
+            try {
+                URL url = new URL("https://67440f77b4e2e04abea090b8.mockapi.io/api/v1/getFavourites");
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                conn.setRequestMethod("GET");
+
+                BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    result.append(line);
+                }
+                reader.close();
+
+                String jsonData = result.toString();
+                mainThreadHandler.post(() -> parseFavourite(jsonData));
+
+            } catch (Exception e) {
+                Log.e("FetchData", "Error fetching data", e);
+            }
+        });
+    }
+
+    private void parseFavourite(String jsonData) {
+        try {
+            Gson gson = new Gson();
+            Type listType = new TypeToken<ArrayList<DoctorData>>() {
+            }.getType();
+            favouritesList = gson.fromJson(jsonData, listType);
+            for (DoctorData data : favouritesList) {
+                if (data.Id == intent.Id) {
+                    intent.isFavourite = true;
+                    favourites = data;
+                }
+            }
+
+            if (intent.isFavourite) {
+                binding.likeBtn.setVisibility(View.GONE);
+                binding.unlikeBtn.setVisibility(View.VISIBLE);
+            } else {
+                binding.likeBtn.setVisibility(View.VISIBLE);
+                binding.unlikeBtn.setVisibility(View.GONE);
+
+            }
         } catch (Exception e) {
             Log.e("FetchData", "Error parsing JSON", e);
         }

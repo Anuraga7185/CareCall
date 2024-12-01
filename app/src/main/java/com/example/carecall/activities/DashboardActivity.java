@@ -104,6 +104,7 @@ public class DashboardActivity extends AppCompatActivity {
     // To View Wishlist
     private void fetchWishListData() {
         binding.whishlistLoader.setVisibility(View.VISIBLE);
+        binding.noData.setVisibility(View.GONE);
         executor.execute(() -> {
             StringBuilder result = new StringBuilder();
             try {
@@ -134,15 +135,27 @@ public class DashboardActivity extends AppCompatActivity {
             Type listType = new TypeToken<ArrayList<DoctorData>>() {
             }.getType();
             List<DoctorData> doctorDataList = gson.fromJson(jsonData, listType);
+            binding.noData.setVisibility(doctorDataList.isEmpty() ? View.VISIBLE : View.GONE);
             binding.recyclerViewWishlist.setLayoutManager(new GridLayoutManager(this, 2));
             binding.recyclerViewWishlist.setAdapter(new GenericRecyclerAdapter<>(doctorDataList, R.layout.doctor_row, this::createRow));
-
             binding.whishlistLoader.setVisibility(View.GONE);
 
-            this.dataToView();
         } catch (Exception e) {
             Log.e("FetchData", "Error parsing JSON", e);
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (whichBottomView == 1) {
+            showDataOnScreen(1);
+            fetchWishListData();
+        } else {
+            showDataOnScreen(0);
+            fetchHomeData();
+        }
+
     }
 
     private void createRow(View view, DoctorData item, int i) {
