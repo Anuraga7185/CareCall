@@ -95,7 +95,7 @@ public class DashboardActivity extends AppCompatActivity {
         binding.profile.setOnClickListener(v -> {
             if (whichBottomView != 3) {
                 whichBottomView = 3;
-
+                showDataOnScreen(3);
             }
         });
     }
@@ -256,9 +256,13 @@ public class DashboardActivity extends AppCompatActivity {
 
         binding.homeScreenContainer.setVisibility(View.GONE);
         binding.wishlistScreenContainer.setVisibility(View.GONE);
+        binding.profileScreenContainer.setVisibility(View.GONE);
         if (position == 1) {
             binding.whishlist.setBackground(getDrawable(R.drawable.curved_edit_box));
             binding.wishlistScreenContainer.setVisibility(View.VISIBLE);
+        } else if (position==3) {
+            binding.profile.setBackground(getDrawable(R.drawable.curved_edit_box));
+            binding.profileScreenContainer.setVisibility(View.VISIBLE);
         } else {
             binding.home.setBackground(getDrawable(R.drawable.curved_edit_box));
             binding.homeScreenContainer.setVisibility(View.VISIBLE);
