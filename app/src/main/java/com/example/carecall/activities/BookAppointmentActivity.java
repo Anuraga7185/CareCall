@@ -3,6 +3,9 @@ package com.example.carecall.activities;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -15,12 +18,18 @@ import com.example.carecall.adapter.GenericRecyclerAdapter;
 import com.example.carecall.databinding.ActivityBookAppointmentBinding;
 import com.example.carecall.databinding.DateRowBinding;
 import com.example.carecall.entity.DoctorData;
+import com.google.gson.Gson;
 import com.razorpay.Checkout;
 import com.razorpay.PaymentResultListener;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -29,6 +38,8 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 
 public class BookAppointmentActivity extends AppCompatActivity implements PaymentResultListener {
@@ -37,6 +48,9 @@ public class BookAppointmentActivity extends AppCompatActivity implements Paymen
     String endTime = "4:00 PM";
     int selectedTime = 0;
     int selectedDate = 0;
+    DoctorData intent;
+    private final Executor executor = Executors.newSingleThreadExecutor();
+    private final Handler mainThreadHandler = new Handler(Looper.getMainLooper());
 
     @SuppressLint("NotifyDataSetChanged")
     @Override
@@ -45,7 +59,7 @@ public class BookAppointmentActivity extends AppCompatActivity implements Paymen
 
         binding = ActivityBookAppointmentBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        DoctorData intent = (DoctorData) getIntent().getSerializableExtra("selectedDoctor");
+        intent = (DoctorData) getIntent().getSerializableExtra("selectedDoctor");
         if (intent != null) {
             Glide.with(this).load(intent.Picture).error(R.drawable.doctor).into(binding.doctorImg);
             binding.experience.setText(intent.getExperience() + "");
@@ -185,12 +199,58 @@ public class BookAppointmentActivity extends AppCompatActivity implements Paymen
     @Override
     public void onPaymentSuccess(String s) {
         Toast.makeText(this, "Payment is successful : " + s, Toast.LENGTH_SHORT).show();
-
+        addToWhishList();
         // Navigate to HomeActivity and clear back stack
         Intent intent = new Intent(this, DashboardActivity.class); // Replace HomeActivity with your actual activity class
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
         finish();
+    }
+
+    private void addToWhishList() {
+        if (intent == null) {
+            return;
+        }
+        intent.isFavourite = true;
+        Gson gson = new Gson();
+        String jsonInput = gson.toJson(intent);
+//        binding.progress.setVisibility(View.VISIBLE);
+        executor.execute(() -> {
+            try {
+
+                URL url = new URL("https://674f657bbb559617b26f0d55.mockapi.io/api/v1/getBookings");
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                conn.setRequestMethod("POST");
+                conn.setRequestProperty("Content-Type", "application/json");
+                conn.setDoOutput(true);
+
+                // Write the JSON input to the output stream
+                try (OutputStream os = conn.getOutputStream()) {
+                    byte[] input = jsonInput.getBytes("utf-8");
+                    os.write(input, 0, input.length);
+                }
+
+                int responseCode = conn.getResponseCode();
+                Log.i("PostData", "Response Code: " + responseCode);
+
+                if (responseCode == HttpURLConnection.HTTP_CREATED) {
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                    StringBuilder result = new StringBuilder();
+                    String line;
+                    while ((line = reader.readLine()) != null) {
+                        result.append(line);
+                    }
+                    reader.close();
+                    Log.i("PostData", "Response: " + result.toString());
+                    String jsonData = result.toString();
+//                    mainThreadHandler.post(() -> parseAndLogJson(jsonData));
+                }
+
+            } catch (Exception e) {
+                //               mainThreadHandler.post(() -> hideProgress());
+                Log.e("PostData", "Error posting data", e);
+            }
+        });
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.example.carecall.activities;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -15,6 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.bumptech.glide.Glide;
 import com.example.carecall.R;
 import com.example.carecall.adapter.GenericRecyclerAdapter;
+import com.example.carecall.databinding.ChatListRowLayoutBinding;
 import com.example.carecall.databinding.DashboardActivityBinding;
 import com.example.carecall.databinding.DoctorRowBinding;
 import com.example.carecall.databinding.DoctorSpecialistRowBinding;
@@ -88,7 +90,8 @@ public class DashboardActivity extends AppCompatActivity {
         binding.booking.setOnClickListener(v -> {
             if (whichBottomView != 2) {
                 whichBottomView = 2;
-
+                showDataOnScreen(2);
+                fetchChatListData();
             }
 
         });
@@ -102,8 +105,8 @@ public class DashboardActivity extends AppCompatActivity {
 
     // To View Bookings
     private void fetchChatListData() {
-        binding.whishlistLoader.setVisibility(View.VISIBLE);
-        binding.noData.setVisibility(View.GONE);
+        binding.bookingLoader.setVisibility(View.VISIBLE);
+        binding.noDataBooking.setVisibility(View.GONE);
         executor.execute(() -> {
             StringBuilder result = new StringBuilder();
             try {
@@ -119,13 +122,14 @@ public class DashboardActivity extends AppCompatActivity {
                 reader.close();
 
                 String jsonData = result.toString();
-                mainThreadHandler.post(() -> parseAndLogJsonWishList(jsonData));
+                mainThreadHandler.post(() -> parseAndLogJsonBooking(jsonData));
 
             } catch (Exception e) {
                 Log.e("FetchData", "Error fetching data", e);
             }
         });
     }
+
     private void parseAndLogJsonBooking(String jsonData) {
         try {
             Gson gson = new Gson();
@@ -133,14 +137,24 @@ public class DashboardActivity extends AppCompatActivity {
             }.getType();
             List<DoctorData> doctorDataList = gson.fromJson(jsonData, listType);
             binding.noData.setVisibility(doctorDataList.isEmpty() ? View.VISIBLE : View.GONE);
-            binding.recyclerViewWishlist.setLayoutManager(new GridLayoutManager(this, 2));
-            binding.recyclerViewWishlist.setAdapter(new GenericRecyclerAdapter<>(doctorDataList, R.layout.doctor_row, this::createRow));
-            binding.whishlistLoader.setVisibility(View.GONE);
+            binding.chatList.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+            binding.chatList.setAdapter(new GenericRecyclerAdapter<>(doctorDataList, R.layout.chat_list_row_layout, (view, item, position) -> {
+                ChatListRowLayoutBinding listRowLayoutBinding = ChatListRowLayoutBinding.bind(view);
+                Glide.with(this).load(item.Picture).error(R.drawable.doctor).into(listRowLayoutBinding.userImg);
+                listRowLayoutBinding.userName.setText(item.Name);
+                listRowLayoutBinding.getRoot().setOnClickListener(v -> {
+                    Intent intent = new Intent(this, ChatActivity.class);
+                    intent.putExtra("doctors", item);
+                    startActivity(intent);
+                });
+            }));
+            binding.bookingLoader.setVisibility(View.GONE);
 
         } catch (Exception e) {
             Log.e("FetchData", "Error parsing JSON", e);
         }
     }
+
     // To View Wishlist
     private void fetchWishListData() {
         binding.whishlistLoader.setVisibility(View.VISIBLE);
@@ -177,6 +191,7 @@ public class DashboardActivity extends AppCompatActivity {
             binding.noData.setVisibility(doctorDataList.isEmpty() ? View.VISIBLE : View.GONE);
             binding.recyclerViewWishlist.setLayoutManager(new GridLayoutManager(this, 2));
             binding.recyclerViewWishlist.setAdapter(new GenericRecyclerAdapter<>(doctorDataList, R.layout.doctor_row, this::createRow));
+
             binding.whishlistLoader.setVisibility(View.GONE);
 
         } catch (Exception e) {
@@ -287,6 +302,7 @@ public class DashboardActivity extends AppCompatActivity {
     }
 
     // Visibility on selected bottom view base--------------------------------------------------------------------------
+    @SuppressLint("UseCompatLoadingForDrawables")
     private void showDataOnScreen(int position) {
         binding.home.setBackground(getDrawable(R.color.lightpurple));
         binding.whishlist.setBackground(getDrawable(R.color.lightpurple));
@@ -296,10 +312,14 @@ public class DashboardActivity extends AppCompatActivity {
         binding.homeScreenContainer.setVisibility(View.GONE);
         binding.wishlistScreenContainer.setVisibility(View.GONE);
         binding.profileScreenContainer.setVisibility(View.GONE);
+        binding.bookingScreenContainer.setVisibility(View.GONE);
         if (position == 1) {
             binding.whishlist.setBackground(getDrawable(R.drawable.curved_edit_box));
             binding.wishlistScreenContainer.setVisibility(View.VISIBLE);
-        } else if (position==3) {
+        } else if (position == 2) {
+            binding.booking.setBackground(getDrawable(R.drawable.curved_edit_box));
+            binding.bookingScreenContainer.setVisibility(View.VISIBLE);
+        } else if (position == 3) {
             binding.profile.setBackground(getDrawable(R.drawable.curved_edit_box));
             binding.profileScreenContainer.setVisibility(View.VISIBLE);
         } else {

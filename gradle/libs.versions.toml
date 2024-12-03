@@ -1,6 +1,7 @@
 [versions]
 agp = "8.7.2"
 checkout = "1.6.4"
+checkoutVersion = "1.6.27"
 glide = "4.15.1"
 gson = "2.10.1"
 junit = "4.13.2"
@@ -16,9 +17,11 @@ navigationUi = "2.6.0"
 googleGmsGoogleServices = "4.4.2"
 firebaseDatabase = "21.0.0"
 activity = "1.8.0"
+proAndroidChatSdk = "3.0.2"
 
 [libraries]
 checkout = { module = "com.razorpay:checkout", version.ref = "checkout" }
+checkout-v1627 = { module = "com.razorpay:checkout", version.ref = "checkoutVersion" }
 compiler = { module = "com.github.bumptech.glide:compiler", version.ref = "glide" }
 glide = { module = "com.github.bumptech.glide:glide", version.ref = "glide" }
 gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
@@ -34,6 +37,7 @@ navigation-fragment = { group = "androidx.navigation", name = "navigation-fragme
 navigation-ui = { group = "androidx.navigation", name = "navigation-ui", version.ref = "navigationUi" }
 firebase-database = { group = "com.google.firebase", name = "firebase-database", version.ref = "firebaseDatabase" }
 activity = { group = "androidx.activity", name = "activity", version.ref = "activity" }
+pro-android-chat-sdk = { module = "com.cometchat:pro-android-chat-sdk", version.ref = "proAndroidChatSdk" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
