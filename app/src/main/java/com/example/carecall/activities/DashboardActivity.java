@@ -100,7 +100,47 @@ public class DashboardActivity extends AppCompatActivity {
         });
     }
 
+    // To View Bookings
+    private void fetchChatListData() {
+        binding.whishlistLoader.setVisibility(View.VISIBLE);
+        binding.noData.setVisibility(View.GONE);
+        executor.execute(() -> {
+            StringBuilder result = new StringBuilder();
+            try {
+                URL url = new URL("https://674f657bbb559617b26f0d55.mockapi.io/api/v1/getBookings");
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                conn.setRequestMethod("GET");
 
+                BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    result.append(line);
+                }
+                reader.close();
+
+                String jsonData = result.toString();
+                mainThreadHandler.post(() -> parseAndLogJsonWishList(jsonData));
+
+            } catch (Exception e) {
+                Log.e("FetchData", "Error fetching data", e);
+            }
+        });
+    }
+    private void parseAndLogJsonBooking(String jsonData) {
+        try {
+            Gson gson = new Gson();
+            Type listType = new TypeToken<ArrayList<DoctorData>>() {
+            }.getType();
+            List<DoctorData> doctorDataList = gson.fromJson(jsonData, listType);
+            binding.noData.setVisibility(doctorDataList.isEmpty() ? View.VISIBLE : View.GONE);
+            binding.recyclerViewWishlist.setLayoutManager(new GridLayoutManager(this, 2));
+            binding.recyclerViewWishlist.setAdapter(new GenericRecyclerAdapter<>(doctorDataList, R.layout.doctor_row, this::createRow));
+            binding.whishlistLoader.setVisibility(View.GONE);
+
+        } catch (Exception e) {
+            Log.e("FetchData", "Error parsing JSON", e);
+        }
+    }
     // To View Wishlist
     private void fetchWishListData() {
         binding.whishlistLoader.setVisibility(View.VISIBLE);
@@ -130,7 +170,6 @@ public class DashboardActivity extends AppCompatActivity {
 
     private void parseAndLogJsonWishList(String jsonData) {
         try {
-
             Gson gson = new Gson();
             Type listType = new TypeToken<ArrayList<DoctorData>>() {
             }.getType();
