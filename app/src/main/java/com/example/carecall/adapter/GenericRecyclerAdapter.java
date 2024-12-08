@@ -11,7 +11,7 @@ import java.util.List;
 
 public class GenericRecyclerAdapter<T> extends RecyclerView.Adapter<GenericRecyclerAdapter.GenericViewHolder> {
 
-    private final List<T> items; // The data list
+    private List<T> items; // The data list
     private final int layoutId; // The layout for each item
     private final OnBindRowListener<T> onBindRowListener; // Callback for onBindViewHolder
 
@@ -36,6 +36,11 @@ public class GenericRecyclerAdapter<T> extends RecyclerView.Adapter<GenericRecyc
         if (onBindRowListener != null) {
             onBindRowListener.onBind(holder.itemView, item, position);
         }
+    }
+
+    public void setItems(List<T> Items) {
+        this.items = Items;
+        notifyDataSetChanged();
     }
 
     @Override

@@ -2,26 +2,23 @@ package com.example.carecall;
 
 import android.app.Application;
 
+import com.example.carecall.entity.CurrentUser;
+
+
 public class MyApplication extends Application {
-    private static final String APP_ID = "YOUR_APP_ID"; // Replace with your CometChat App ID
-    private static final String REGION = "YOUR_REGION"; // Replace with your CometChat Region
+    public static final String APP_ID = "267378a1e936f982";
+
+    public static final String AUTH_KEY = "852a43a137a9872eb37afbe382066897ea00db3a";
+
+    public static final String REGION = "IN";
+    public static CurrentUser currentUser;
 
     @Override
     public void onCreate() {
         super.onCreate();
-        // Initialize CometChat
-//        CometChat.init(this, APP_ID, REGION, new CometChat.CallbackListener<String>() {
-//            @Override
-//            public void onSuccess(String successMessage) {
-//                // Initialization successful
-//                System.out.println("CometChat initialized successfully");
-//            }
-//
-//            @Override
-//            public void onError(CometChatException e) {
-//                // Initialization failed
-//                e.printStackTrace();
-//            }
-//        });
+    }
+
+    public static void setCurrentUser(CurrentUser user) {
+        currentUser = user;
     }
 }

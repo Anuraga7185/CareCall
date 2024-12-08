@@ -2,6 +2,7 @@ package com.example.carecall.activities;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -14,6 +15,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.bumptech.glide.Glide;
+import com.example.carecall.MyApplication;
 import com.example.carecall.R;
 import com.example.carecall.adapter.GenericRecyclerAdapter;
 import com.example.carecall.databinding.ChatListRowLayoutBinding;
@@ -99,6 +101,7 @@ public class DashboardActivity extends AppCompatActivity {
             if (whichBottomView != 3) {
                 whichBottomView = 3;
                 showDataOnScreen(3);
+                dataForProfile();
             }
         });
     }
@@ -205,6 +208,12 @@ public class DashboardActivity extends AppCompatActivity {
         if (whichBottomView == 1) {
             showDataOnScreen(1);
             fetchWishListData();
+        } else if (whichBottomView == 2) {
+            showDataOnScreen(2);
+            fetchChatListData();
+        } else if (whichBottomView == 3) {
+            showDataOnScreen(3);
+            dataForProfile();
         } else {
             showDataOnScreen(0);
             fetchHomeData();
@@ -228,6 +237,29 @@ public class DashboardActivity extends AppCompatActivity {
 
     }
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    // To View Profile
+    private void dataForProfile() {
+        binding.logout.setOnClickListener(v -> {
+            binding.loader.setVisibility(View.VISIBLE);
+            SharedPreferences sharedPreferences = getSharedPreferences(LoginScreenActivity.PREFS_NAME, MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putString(LoginScreenActivity.KEY_EMAIL, null);
+            editor.putString(LoginScreenActivity.KEY_PASSWORD, null);
+            editor.apply();
+            Intent intent = new Intent(DashboardActivity.this, LoginScreenActivity.class);
+            MyApplication.setCurrentUser(null);
+            startActivity(intent);
+            finish();
+            binding.loader.setVisibility(View.GONE);
+        });
+        binding.ivBack.setOnClickListener(v -> {
+            whichBottomView = 0;
+            showDataOnScreen(0);
+            fetchHomeData();
+        });
+        binding.profileUserName.setText(MyApplication.currentUser.name);
+    }
 
     // To View Home Screen
     private void fetchHomeData() {
@@ -259,6 +291,7 @@ public class DashboardActivity extends AppCompatActivity {
         if (dashboardDataList.isEmpty() || dashboardDataList.get(0).Category.isEmpty()) {
             return;
         }
+        binding.username.setText("Hi, " + MyApplication.currentUser.name);
         binding.doctorListHeader.setVisibility(View.VISIBLE);
         binding.doctorSpecialistHeader.setVisibility(View.VISIBLE);
         binding.doctorSpecialistData.setVisibility(View.VISIBLE);

@@ -18,6 +18,7 @@ googleGmsGoogleServices = "4.4.2"
 firebaseDatabase = "21.0.0"
 activity = "1.8.0"
 proAndroidChatSdk = "3.0.2"
+proAndroidChatSdkVersion = "3.0.0"
 
 [libraries]
 checkout = { module = "com.razorpay:checkout", version.ref = "checkout" }
@@ -38,6 +39,7 @@ navigation-ui = { group = "androidx.navigation", name = "navigation-ui", version
 firebase-database = { group = "com.google.firebase", name = "firebase-database", version.ref = "firebaseDatabase" }
 activity = { group = "androidx.activity", name = "activity", version.ref = "activity" }
 pro-android-chat-sdk = { module = "com.cometchat:pro-android-chat-sdk", version.ref = "proAndroidChatSdk" }
+pro-android-chat-sdk-v300 = { module = "com.cometchat:pro-android-chat-sdk", version.ref = "proAndroidChatSdkVersion" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

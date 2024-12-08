@@ -119,7 +119,6 @@ public class BookAppointmentActivity extends AppCompatActivity implements Paymen
 
             // set your id as below
             checkout.setKeyID("rzp_test_j2LAXIVp2bNJ4Z");
-
             // initialize json object
             JSONObject object = new JSONObject();
             try {
