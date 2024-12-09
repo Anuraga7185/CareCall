@@ -14,9 +14,13 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.carecall.MyApplication;
 import com.example.carecall.R;
 import com.example.carecall.databinding.ActivitySignUpScreenBinding;
 import com.example.carecall.entity.CurrentUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.gson.Gson;
 
 import java.io.BufferedReader;
@@ -41,7 +45,15 @@ public class SignUpScreenActivity extends AppCompatActivity {
 
         binding.btnSignUp.setOnClickListener(v -> {
             // Redirect to Login Screen
-            createUser();
+            FirebaseMessaging.getInstance().getToken().addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    String token = task.getResult();
+                    DatabaseReference tokensRef = FirebaseDatabase.getInstance().getReference("userTokens");
+                    tokensRef.child(binding.uniqueId.getText().toString()).setValue(token);
+                    createUser(token);
+                }
+            });
+
 
         });
 
@@ -54,12 +66,14 @@ public class SignUpScreenActivity extends AppCompatActivity {
 
     }
 
-    private void createUser() {
+    private void createUser(String token) {
         CurrentUser currentUser = new CurrentUser();
         currentUser.name = binding.name.getText().toString();
         currentUser.email = binding.email.getText().toString();
         currentUser.passwd = binding.passwd.getText().toString();
         currentUser.uniqieId = binding.uniqueId.getText().toString();
+        currentUser.fcmToken = token;
+        Log.d("Show Token", currentUser.fcmToken);
         Gson gson = new Gson();
         String jsonInput = gson.toJson(currentUser);
         executor.execute(() -> {
@@ -77,6 +91,7 @@ public class SignUpScreenActivity extends AppCompatActivity {
                     os.write(input, 0, input.length);
                 }
                 if (conn.getResponseCode() == HttpURLConnection.HTTP_CREATED) {
+
                     openPage();
                 }
 

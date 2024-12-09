@@ -15,7 +15,7 @@ public class CurrentUser implements Serializable {
     public String dateOfBirth = "25-05-2001";
     public String biography = "N/A";
     public String pictureUrl;
-
+    public String fcmToken;
     private List<MedicalHistory> medicalHistory;
 
     private List<DoctorData> appointments;

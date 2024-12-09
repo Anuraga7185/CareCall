@@ -16,6 +16,9 @@ import com.example.carecall.MyApplication;
 import com.example.carecall.databinding.ActivityLoginScreenBinding;
 import com.example.carecall.entity.CurrentUser;
 import com.example.carecall.entity.DoctorData;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -108,6 +111,7 @@ public class LoginScreenActivity extends AppCompatActivity {
             }
         }
         if (isFound) {
+
             MyApplication.setCurrentUser(loggedInUser);
             saveUserCredentials(loggedInUser.email, loggedInUser.passwd);
             redirectToDashboard();

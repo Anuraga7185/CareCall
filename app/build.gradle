@@ -49,5 +49,9 @@ dependencies {
     androidTestImplementation libs.ext.junit
     androidTestImplementation libs.espresso.core
     implementation libs.checkout.v1627
+    implementation platform(libs.firebase.bom)
+    implementation libs.google.firebase.messaging
+    implementation libs.firebase.analytics
+    implementation 'com.google.auth:google-auth-library-oauth2-http:1.18.0'
 
 }

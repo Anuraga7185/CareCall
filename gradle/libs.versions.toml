@@ -2,6 +2,8 @@
 agp = "8.7.2"
 checkout = "1.6.4"
 checkoutVersion = "1.6.27"
+firebaseBom = "33.7.0"
+firebaseMessagingVersion = "24.4.1"
 glide = "4.15.1"
 gson = "2.10.1"
 junit = "4.13.2"
@@ -19,12 +21,17 @@ firebaseDatabase = "21.0.0"
 activity = "1.8.0"
 proAndroidChatSdk = "3.0.2"
 proAndroidChatSdkVersion = "3.0.0"
+firebaseMessaging = "24.1.0"
 
 [libraries]
 checkout = { module = "com.razorpay:checkout", version.ref = "checkout" }
 checkout-v1627 = { module = "com.razorpay:checkout", version.ref = "checkoutVersion" }
 compiler = { module = "com.github.bumptech.glide:compiler", version.ref = "glide" }
+firebase-analytics = { module = "com.google.firebase:firebase-analytics" }
+firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }
+firebase-messaging-v2441 = { module = "com.google.firebase:firebase-messaging", version.ref = "firebaseMessagingVersion" }
 glide = { module = "com.github.bumptech.glide:glide", version.ref = "glide" }
+google-firebase-messaging = { module = "com.google.firebase:firebase-messaging" }
 gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
@@ -40,6 +47,7 @@ firebase-database = { group = "com.google.firebase", name = "firebase-database",
 activity = { group = "androidx.activity", name = "activity", version.ref = "activity" }
 pro-android-chat-sdk = { module = "com.cometchat:pro-android-chat-sdk", version.ref = "proAndroidChatSdk" }
 pro-android-chat-sdk-v300 = { module = "com.cometchat:pro-android-chat-sdk", version.ref = "proAndroidChatSdkVersion" }
+firebase-messaging = { group = "com.google.firebase", name = "firebase-messaging", version.ref = "firebaseMessaging" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

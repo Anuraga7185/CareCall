@@ -10,7 +10,9 @@ public class DoctorData implements Serializable {
     public int Expriense;
     public int Id;
     public int id;
+    public String fcmToken;
     public String Location;
+    public String uniqueId;
     public boolean isFavourite;
     public String Mobile;
     public String Name;
