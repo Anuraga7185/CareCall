@@ -17,11 +17,14 @@ import com.example.carecall.databinding.ChatRowLayoutBinding;
 import com.example.carecall.entity.ChatMessage;
 import com.example.carecall.entity.CurrentUser;
 import com.example.carecall.entity.DoctorData;
+import com.example.carecall.entity.FcmNotificationSender;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.firebase.messaging.RemoteMessage;
 
 import org.json.JSONObject;
 
@@ -36,6 +39,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.Random;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class ChatActivity extends AppCompatActivity {
     DoctorData intent;
@@ -61,7 +67,21 @@ public class ChatActivity extends AppCompatActivity {
                 chatRef.child("messages").child(messageId).setValue(chatMessage);
 
                 messageArrayList.add(chatMessage);
-                sendNotification("fQ5gXjchRTW4YBZyDlPjE1:APA91bF4p8i7QkNYrNKQic6Lki6l-8JVI4C20yT1qiwtp5Ebwqk_bUHWZ4fIUqtCoMGl6tY3TxFdtin8dK_TJ5UeDS0j1H_zmd9sEBTPAng2SVFSxZk7Jws", "CareCall", chatMessage.message);
+                // Send notification in background
+                ExecutorService executorService = Executors.newSingleThreadExecutor();
+                executorService.execute(() -> {
+                    try {
+                        FcmNotificationSender.sendNotification(
+                                ChatActivity.this,
+                                intent.fcmToken,
+                                "CareCall",
+                                chatMessage.message
+                        );
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                });
+                executorService.shutdown();
                 binding.messageEditText.setText("");
             }
         });
@@ -107,60 +127,6 @@ public class ChatActivity extends AppCompatActivity {
                 Log.e("Chat", "Failed to load messages.", error.toException());
             }
         });
-    }
-
-    private void sendNotification(String receiverToken, String title, String body) {
-        new Thread(() -> {
-            try {
-                // Firebase server URL
-                URL url = new URL("https://fcm.googleapis.com/fcm/send");
-
-                // Create the connection
-                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-                connection.setDoOutput(true);
-                connection.setRequestMethod("POST");
-                connection.setRequestProperty("Authorization", "key=05acc4a5808cb22974bf302438a39de7f33f70cc"); // Replace with your Firebase Server Key
-                connection.setRequestProperty("Content-Type", "application/json");
-
-                // Construct the JSON payload
-                JSONObject notification = new JSONObject();
-                notification.put("to", receiverToken); // Receiver's FCM token
-
-                JSONObject notificationBody = new JSONObject();
-                notificationBody.put("title", title); // Notification title
-                notificationBody.put("body", body);  // Notification body
-
-                notification.put("notification", notificationBody);
-
-                // Write the JSON payload to the connection output stream
-                OutputStream outputStream = connection.getOutputStream();
-                outputStream.write(notification.toString().getBytes("UTF-8"));
-                outputStream.close();
-
-                // Get the response code to determine success
-                int responseCode = connection.getResponseCode();
-                if (responseCode == HttpURLConnection.HTTP_OK) {
-                    Log.d("FCM", "Notification sent successfully");
-                } else {
-                    Log.e("FCM", "Error sending notification, Response Code: " + responseCode);
-                    InputStream errorStream = connection.getErrorStream();
-                    if (errorStream != null) {
-                        BufferedReader reader = new BufferedReader(new InputStreamReader(errorStream));
-                        String line;
-                        StringBuilder errorMessage = new StringBuilder();
-                        while ((line = reader.readLine()) != null) {
-                            errorMessage.append(line);
-                        }
-                        Log.e("FCM", "Error: " + errorMessage);
-                    }
-                }
-
-                // Disconnect the connection
-                connection.disconnect();
-            } catch (Exception e) {
-                Log.e("FCM", "Error sending notification", e);
-            }
-        }).start();
     }
 
 }
